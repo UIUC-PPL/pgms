@@ -50,11 +50,11 @@ public:
     switch(phase) {
       case 0:
         phase++;
-        gid.start();
+        gid.start(0);
         break;
       case 1:
         phase++;
-        gid.start();
+        gid.start(0);
         break;
       default:
         CkExit();
@@ -137,10 +137,11 @@ public:
 
   }
 
-  void start()
+  void start(int msg_size_idx)
   {
     resetTimer();
     if(CkMyPe() < CkNumPes()/2 && CkMyPe()!=0) {
+      round = msg_size_idx;
       msg_collection = new PingMsg*[MSG_COUNT];
       for(int k = 0; k < MSG_COUNT; k++)
         msg_collection[k] = new (msg_sizes[round]*sizeof(int)) PingMsg;
@@ -216,7 +217,7 @@ public:
           return;
         }
       }
-      thisProxy.start();
+      thisProxy.start(round);
     }
   }
 };
